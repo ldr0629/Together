@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}"-->
 <head>
   <meta charset="UTF-8">
@@ -26,16 +27,22 @@
           <a class="nav-link active" th:href="@{/board}"><span style="font-weight: bold;">모집하기</span></a>
         </li>
 
-        <li th:if="${userName}" th:text="${userName}" class="nav-item">
+        <li class="nav-item" sec:authorize="isAuthenticated()">
           <a href="/logout" class="btn btn-outline-dark active" role="button">로그아웃</a>
         </li>
         <!-- Button trigger modal -->
-        <li th:unless="${userName}==''" th:text="로그인" class="nav-item" data-bs-toggle="modal" data-bs-target="#login">
-          <button class="btn btn-outline-dark bi bi-lock-fill" role="button">로그인</button>
+        <!--        <li th:unless="${userName}==''" th:text="로그인" class="nav-item" data-bs-toggle="modal" data-bs-target="#login">-->
+        <!--          <button class="btn btn-outline-dark bi bi-lock-fill" role="button">로그인</button>-->
+        <!--        </li>-->
+        <li sec:authorize="isAnonymous()" class="nav-item">
+          <button type="button" class="btn border border-0" data-bs-toggle="modal" data-bs-target="#login">
+            로그인
+          </button>
         </li>
-        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#login">
-          로그인
-        </button> -->
+
+        <li>
+          <span sec:authorize="isAuthenticated()" th:text="${userName}"></span>
+        </li>
 
         <!-- Modal -->
         <div class="modal fade" id="login" tabindex="-1" aria-labelledby="login" aria-hidden="true">
@@ -61,18 +68,18 @@
         <!-- <li class="nav-item">
           <a class="nav-link active" href="./view/login.html" th:href="@{/member/login}" sec:authorize="isAnonymous()"><span style="font-weight: bold;">로그인</span></a>
         </li> -->
-        <li class="nav-item">
+        <li class="nav-item" sec:authrioze="isAuthenticated()">
           <i class="bi bi-bell nav-link"></i>
         </li>
-        <li class="nav-item">
-          <div class="dropdown">
-            <button class="bi bi-gear nav-link dropdown-toggle" type="button" id="setting" data-bs-toggle="dropdown" aria-expanded="false"></button>
-            <ul class="dropdown-menu" aria-labelledby="setting">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </div>
+        <li class="nav-item" sec:authrioze="isAuthenticated()">
+          <!--          <div class="dropdown">-->
+          <!--            <button class="bi bi-gear nav-link dropdown-toggle" type="button" id="setting" data-bs-toggle="dropdown" aria-expanded="false"></button>-->
+          <!--            <ul class="dropdown-menu" aria-labelledby="setting">-->
+          <!--              <li><a class="dropdown-item" href="#">Action</a></li>-->
+          <!--              <li><a class="dropdown-item" href="#">Another action</a></li>-->
+          <!--              <li><a class="dropdown-item" href="#">Something else here</a></li>-->
+          <!--            </ul>-->
+          <!--          </div>-->
         </li>
       </ul>
     </div>
@@ -162,4 +169,3 @@
 <script src="/js/bootstrap.js"></script>
 </body>
 </html>
-
