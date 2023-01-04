@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/resource/static/css/bootstrap.css">
+  <style>
+    select option[value=""][disabled] {
+	    display: none;
+    }
+
+    .ck-editor__editable { 
+      height: 400px;
+     }
+  </style>
+  <script src="https://cdn.ckeditor.com/ckeditor5/35.4.0/classic/ckeditor.js"></script>
+  <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
+
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg" style="height: 85px;">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary ms-4" href="/" th:href="@{/}">Logo</a>
+
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="bi bi-list"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item text-dark">
+            <a class="nav-link active" href="./view/board.html" th:href="@{/board}"><span style="font-weight: bold;">모집하기</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="./view/login.html" th:href="@{/member/login}" sec:authorize="isAnonymous()"><span style="font-weight: bold;">로그인</span></a>
+          </li>
+          <li class="nav-item">
+            <i class="bi bi-bell nav-link"></i>
+          </li>
+          <li class="nav-item">
+            <i class="bi bi-gear nav-link"></i>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-lg mx-auto mt-5 p-4">
+    <div class="container-lg"><h3>모집에 필요한 정보를 입력해주세요</h3></div>
+    <hr class="border border-primary">
+    
+    <form class="row m-4">
+      <div class="col-md-5 m-4">
+        <label for="inputState0" class="form-label">State</label>
+        <select id="inputState0" class="form-select">
+          <option value="" disabled selected>프로젝트 / 스터디</option>
+          <option>...</option>
+        </select>
+      </div>
+
+      <div class="col-md-5 m-4">
+        <label for="inputState1" class="form-label">State</label>
+        <select id="inputState1" class="form-select">
+          <option selected>Choose...</option>
+          <option>...</option>
+        </select>
+      </div>
+
+      <div class="col-md-5 m-4">
+        <label for="inputState2" class="form-label">State</label>
+        <select id="inputState2" class="form-select">
+          <option selected>Choose...</option>
+          <option>...</option>
+        </select>
+      </div>
+
+      <div class="col-md-5 m-4">
+        <label for="inputState3" class="form-label">State</label>
+        <select id="inputState3" class="form-select">
+          <option selected>Choose...</option>
+          <option>...</option>
+        </select>
+      </div>
+
+      <div class="col-md-5 m-4">
+        <label for="inputState4" class="form-label">State</label>
+        <select id="inputState4" class="form-select">
+          <option selected>Choose...</option>
+          <option>...</option>
+        </select>
+      </div>
+
+      <div class="col-md-5 m-4">
+        <label for="inputState5" class="form-label">State</label>
+        <select id="inputState5" class="form-select">
+          <option selected>Choose...</option>
+          <option>...</option>
+        </select>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="container-lg mx-auto mt-3 p-4">
+    <div class="container-lg"><h3>프로젝트에 대해 설명해주세요</h3></div>
+    <hr class="border border-primary">
+
+    <form class="p-3 m-4 mx-auto">
+      <input type="text" class="form-control mb-3" placeholder="제목을 입력하세요">
+
+      <div id="editor"></div>
+
+      <div class="m-3 d-grid gap-2 d-md-flex justify-content-md-end">
+        <button class="btn btn-primary" type="button">모집하기</button>
+      </div>
+    </form>
+  </div>
+
+
+  <script src="/resource/static/js/bootstrap.js"></script>
+  <script>
+    ClassicEditor
+        .create( document.querySelector( '#editor' ), { language: "ko" } )
+        .catch( error => {
+            console.error( error );
+        } );
+</script>
+
+</body>
+</html>
