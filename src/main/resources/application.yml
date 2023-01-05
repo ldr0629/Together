@@ -1,6 +1,26 @@
+#server:
+#  port:8080
+#servlet:
+#  context-path: /
+#  encoding:
+#    charset: UTF-8
+#    enabled: true
+#    force:true
+
 spring:
   config:
     import: "optional:configserver:"
 
   datasource:
     url: jdbc:h2:mem:testdb
+#    driver-class-name: com.mysql.cj.jdbc.Driver # JDBC드라이버 정보 설정
+#    url: jdbc:mysql://localhost:3306/security_db?serverTimezone=Asia/Seoul # DB연결 정보 설정
+#    username :root
+#    password: root
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update # hibernate를 사용해서 DDL 생성
+#      naming:
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#    show-sql: true # hibernate가 실행한 SQL 쿼리문을 보기 위함

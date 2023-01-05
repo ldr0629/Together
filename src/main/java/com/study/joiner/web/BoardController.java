@@ -9,17 +9,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-// controller test
 @RequiredArgsConstructor
 @Controller
 public class BoardController {
-    private BoardService boardService;
+    private final BoardService boardService;
 
-//    @GetMapping("/")
+//    @GetMapping("/board")
 //    public String list(Model model) {
 //        List<BoardDto> boardDtoList = boardService.getBoardList();
 //        model.addAttribute("postList", boardDtoList);
-//        return "board/list.html";
+//        return "view/board";
 //    }
 //
 //    @GetMapping("/post")

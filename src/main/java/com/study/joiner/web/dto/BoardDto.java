@@ -54,4 +54,19 @@ public class BoardDto {
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
     }
+
+    public BoardDto(Board entity) {
+        this.id = entity.getId();
+        this.study_project = entity.getStudy_project();
+        this.person_num = entity.getPerson_num();
+        this.online_offline = entity.getOnline_offline();
+        this.duration = entity.getDuration();
+        this.skill = entity.getSkill();
+        this.date = entity.getDate();
+        this.calling = entity.getCalling();
+        this.title = entity.getTitle();
+        this.input_content = entity.getInput_content();
+        this.createdDate = entity.getCreatedDate();
+        this.modifiedDate = entity.getModifiedDate();
+    }
 }
