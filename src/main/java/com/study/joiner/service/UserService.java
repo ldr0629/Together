@@ -1,6 +1,8 @@
 package com.study.joiner.service;
 
+import com.study.joiner.domain.user.Board;
 import com.study.joiner.domain.user.SocialUser;
+import com.study.joiner.repository.BoardRepository;
 import com.study.joiner.repository.UserRepository;
 import com.study.joiner.web.dto.UserResponseDto;
 import com.study.joiner.web.dto.UserUpdateRequestDto;
@@ -12,18 +14,28 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-
+    private final BoardRepository boardRepository;
+    // 내 정보 수정 -- 완
     @Transactional
-    public Long update(Long id, UserUpdateRequestDto requestDto) {
-        SocialUser user = userRepository.findById(id)
+    public UserResponseDto update(String email, UserUpdateRequestDto requestDto) {
+        SocialUser user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-        user.update(requestDto.getName(), requestDto.getPicture());
-        return id;
+
+        user.userUpdate(requestDto.getNickName(), requestDto.getContent());
+        return new UserResponseDto(user);
     }
 
-    public UserResponseDto findById(Long id) {
-        SocialUser entity = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException());
+    // 내 정보 조회 -- 완
+    @Transactional(readOnly = true)
+    public UserResponseDto getInfo(String email) {
+        SocialUser entity = userRepository.findByEmail(email)
+                .orElseThrow(IllegalArgumentException::new);
         return new UserResponseDto(entity);
+    }
+
+    // 회원 탈퇴 -- 완
+    @Transactional
+    public void delete(SocialUser socialUser) {
+        userRepository.delete(socialUser);
     }
 }
