@@ -7,12 +7,11 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class UserUpdateRequestDto {
-    private String name;
-    private String picture;
+    private String nickName;
+    private String content;
 
-    @Builder
-    public UserUpdateRequestDto(String name, String picture) {
-        this.name = name;
-        this.picture = picture;
+    public UserUpdateRequestDto(String nickName, String content) {
+        this.nickName = nickName;
+        this.content = content;
     }
 }

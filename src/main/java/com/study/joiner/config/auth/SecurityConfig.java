@@ -18,20 +18,13 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/", "/css/**", "/images/**",
-                        "/js/**", "/h2-console").permitAll()
-                .requestMatchers("/api/v1/**").hasRole(Role.USER.name())
+                .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .logout()
