@@ -23,7 +23,7 @@ public class UserService {
 
     public UserResponseDto findById(Long id) {
         SocialUser entity = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException());
+                .orElseThrow(IllegalArgumentException::new);
         return new UserResponseDto(entity);
     }
 }

@@ -14,12 +14,12 @@ import java.util.List;
 public class BoardController {
     private final BoardService boardService;
 
-//    @GetMapping("/board")
-//    public String list(Model model) {
-//        List<BoardDto> boardDtoList = boardService.getBoardList();
-//        model.addAttribute("postList", boardDtoList);
-//        return "view/board";
-//    }
+    @GetMapping("/board")
+    public String list(Model model) {
+        List<BoardDto> boardDtoList = boardService.getBoardList();
+        model.addAttribute("postList", boardDtoList);
+        return "view/board";
+    }
 //
 //    @GetMapping("/post")
 //    public String post() {

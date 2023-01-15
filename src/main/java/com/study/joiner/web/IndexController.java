@@ -2,7 +2,6 @@ package com.study.joiner.web;
 
 import com.study.joiner.config.auth.LoginUser;
 import com.study.joiner.config.auth.dto.SessionUser;
-import com.study.joiner.service.BoardService;
 import com.study.joiner.service.UserService;
 import com.study.joiner.web.dto.UserResponseDto;
 import jakarta.servlet.http.HttpSession;
@@ -11,12 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
     private final UserService userService;
-    private final BoardService boardService;
+    private final HttpSession httpSession;
 
     // 메인페이지
     @GetMapping("/")
@@ -28,18 +28,18 @@ public class IndexController {
         return "index";
     }
 
-    // 내 작성 글
-//    @GetMapping("user/board/{id}")
-//    public String userBoard(@PathVariable Long id, Model model) {
-//        model.addAttribute("boardList", boardService.getBoardListById(id));
-//        return "user-board";
-//    }
-
     // 내 정보 수정
-    @GetMapping("/user/update/{id}")
+    @GetMapping("/user/{id}")
     public String userUpdate(@PathVariable Long id, Model model) {
         UserResponseDto dto = userService.findById(id);
         model.addAttribute("user", dto);
-        return "user-update";
+        return "view/setting";
+    }
+
+    @PostMapping("/user/{id}")
+    public String userUpdate(@PathVariable Long id) {
+        //update
+
+        return "redirect:/view/setting";
     }
 }
