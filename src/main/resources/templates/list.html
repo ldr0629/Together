@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>게시판 - 목록</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:insert="common/header.html"></header>
+<div class="container">
+    <div>총 건수 : <span th:text="${postList.totalElements}"></span></div>
+    <table class="table">
+        <thead class="thead-light">
+        <tr class="text-center">
+            <th scope="col">#</th>
+            <th scope="col">제목</th>
+            <th scope="col">내용</th>
+            <th scope="col">작성일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="text-center" th:each="post : ${postList}">
+            <th scope="row">
+                <span th:text="${post.id}"></span>
+            </th>
+            <td>
+                <a th:href="@{'/post/' + ${post.id}}">
+                    <span th:text="${post.title}"></span>
+                </a>
+            </td>
+            <td>
+                <span th:text="${post.input_content}"></span>
+            </td>
+            <td>
+                <span th:text="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label = "Page navigation example">
+        <ui class="pagination justify-content-center">
+            <li class="page-item"th:classappend="${1 == postList.pageable.pageNumber + 1} ? 'disabled'">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true"
+                   th:href="@{/(page=${postList.pageable.pageNumber - 1})}">Previous</a>
+            </li>
+            <li class="page-item" th:classappend="${i == postList.pageable.pageNumber + 1} ? 'disabled'" th:each="i : ${#numbers.sequence(startPage, endPage)}">
+                <a class="page-link" href="#" th:href="@{/(page=${i - 1})}" th:text="${i}">1></a>
+            </li>
+            <li class="page-item" th:classappend="${postList.totalPages == postList.pageable.pageNumber + 1} ? 'disabled'">
+                <a class="page-link" href="#" th:href="@{/(page=${postList.pageable.pageNumber + 1})}">Next</a>
+            </li>
+        </ui>
+    </nav>
+
+    <div class="text-right">
+        <div class="col-auto mr-auto"></div>
+        <div class="col-auto">
+            <a class="btn btn-primary" th:href="@{/post}" role="button">글쓰기</a>
+        </div>
+    </div>
+
+</div>
+<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>
