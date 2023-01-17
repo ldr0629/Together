@@ -15,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Board extends BaseTimeEntity {
 
+    private String str;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
