@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @Entity
 @NoArgsConstructor
@@ -15,6 +17,7 @@ public class Board extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "board_id")
     private Long id;
 
     @Column(length = 10, nullable = false)
@@ -48,6 +51,10 @@ public class Board extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private SocialUser socialUser;
 
+//    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+//    @OrderBy("id asc")
+//    private List<Comment> comment;
+
     @Builder
     public Board(Long id, String postRecruit, String recruitNum, String progressWay, String duration, String skill, String date, String contactWay, String title, String content) {
         this.id = id;
@@ -68,13 +75,8 @@ public class Board extends BaseTimeEntity {
         this.socialUser = socialUser;
     }
 
-    // 게시글 수정시 사용
-    public void edit(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
-
-    public void update(BoardDto boardDto) {
+    // 게시글 수정
+    public void edit(BoardDto boardDto) {
         this.postRecruit = boardDto.getPostRecruit();
         this.recruitNum = boardDto.getRecruitNum();
         this.progressWay = boardDto.getProgressWay();

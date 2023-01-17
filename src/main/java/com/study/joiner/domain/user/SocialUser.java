@@ -39,6 +39,10 @@ public class SocialUser extends BaseTimeEntity {
     @OneToMany(mappedBy = "socialUser",cascade = CascadeType.REMOVE)
     private List<Board> boardList = new ArrayList<>();
 
+//    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+//    @OrderBy("id asc")
+//    private List<Comment> comment;
+
     @Builder
     public SocialUser(String name, String email, String picture, Role role) {
         this.name = name;
