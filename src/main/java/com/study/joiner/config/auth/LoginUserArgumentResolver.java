@@ -12,12 +12,12 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @RequiredArgsConstructor
 @Component
-public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
+public class  LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
     private final HttpSession httpSession;
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean isLoginUserAnnotation = parameter.getParameterAnnotation(LoginUser.class) != null;
-        boolean isUserClass = SessionUser.class.equals(parameter.getParameterType());
+        boolean isUserClass = SessionUser.class.isAssignableFrom(LoginUser.class);
         return isLoginUserAnnotation && isUserClass;
     }
 

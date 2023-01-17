@@ -83,13 +83,13 @@
   <div class="container-lg mx-auto mt-4 p-3" style="width: 80%;">
     <form method="post" th:object="${user}">
       <div class="input-group mb-3">
-        <label class="form-check-label h4 m-2">Username</label>
-        <input type="text" class="form-control form-check-input" placeholder="이름을 입력하세요">
+        <label class="form-check-label h4 m-2" for="name">Username</label>
+        <input type="text" class="form-control form-check-input" placeholder="이름을 입력하세요" id="*{name}">
       </div>
 
       <label class="form-check-label m-2 h4">Email</label>
       <div class="input-group mb-3">
-        <input type="text" class="form-control h4" placeholder="이메일을 입력하세요" aria-describedby="basic-addon2">
+        <input type="text" class="form-control h4" placeholder="이메일을 입력하세요" aria-describedby="basic-addon2" id="*{email}">
         <span class="input-group-text" id="basic-addon2">@example.com</span>
       </div>
 
@@ -98,7 +98,9 @@
         <textarea class="form-control" aria-label="With textarea"></textarea>
       </div>
 
+
       <div class="text-end m-3">
+<!--        <span>[[가입일 : ${user.regDate}]]</span>-->
         <button class="btn btn-primary">저장</button>
       </div>
     </form>
