@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}"-->
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,47 +16,47 @@
 <!--navbar-->
 <nav class="navbar navbar-expand-lg" style="height: 85px;">
   <div class="container-fluid">
-    <a class="navbar-brand text-primary ms-4" th:href="@{/}">Logo</a>
-
+    <a class="navbar-brand text-primary ms-4" th:href="@{/}">Together</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="true" aria-label="Toggle navigation">
       <i class="bi bi-list"></i>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item" sec:authorize="isAuthenticated()">
-          <a class="nav-link active" th:href="@{/board}"><span style="font-weight: bold;">모집하기</span></a>
-        </li>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link active" th:href="@{/user/write}"><span style="font-weight: bold;">모집하기</span></a>
+  <!--          <a href="/logout" class="btn btn-outline-dark active" role="button">로그아웃</a>-->
+          </li>
 
-        <!-- login modal trigger -->
-        <li class="nav-item" sec:authorize="isAnonymous()">
-          <a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#login"><span style="font-weight: bold;">로그인</span></a>
-        </li>
+          <!-- login modal trigger -->
+          <li class="nav-item" sec:authorize="isAnonymous()">
+              <a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#login"><span style="font-weight: bold;">로그인</span></a>
+          </li>
 
-        <!-- Modal -->
-        <div class="modal fade" id="login" tabindex="-1" aria-labelledby="login" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header border border-0">
-                <h1 class="modal-title fs-5 p-1" id="loginModalTitle">Logo</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body m-4">
-                <div class="row justify-content-between p-3">
-                  <div class="col-6"><a href="/oauth2/authorization/google" class="btn btn-outline-danger bi bi-google" role="button"> Google Login</a></div>
-                  <div class="col-6"><a href="/oauth2/authorization/naver" class="btn btn-outline-success" role="button">Naver Login</a></div>
+            <!-- Modal -->
+            <div class="modal fade" id="login" tabindex="-1" aria-labelledby="login" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header border border-0">
+                    <h1 class="modal-title fs-5 p-1" id="loginModalTitle">Together</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body m-4">
+                    <div class="row justify-content-between p-3">
+                      <div class="col-6"><a href="/oauth2/authorization/google" class="btn btn-outline-danger bi bi-google" role="button"> Google Login</a></div>
+                      <div class="col-6"><a href="/oauth2/authorization/naver" class="btn btn-outline-success" role="button">Naver Login</a></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <i class="bi bi-bell nav-link"></i>
+          </li>
 
-        <li class="nav-item" sec:authorize="isAuthenticated()">
-          <i class="bi bi-bell nav-link"></i>
-        </li>
-        <li class="nav-item" sec:authorize="isAuthenticated()">
-          <a th:href="@{/user/{id} (id=${session.socialUser.id})}"><i class="bi bi-gear nav-link"></i></a>
-        </li>
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a th:href="@{/user/update}"><i class="bi bi-gear nav-link"></i></a>
+          </li>
       </ul>
     </div>
   </div>

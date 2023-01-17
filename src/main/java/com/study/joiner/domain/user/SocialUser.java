@@ -6,12 +6,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @Entity
 public class SocialUser extends BaseTimeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+
     private Long id;
 
     @Column(nullable = false)
@@ -23,9 +28,22 @@ public class SocialUser extends BaseTimeEntity {
     @Column
     private String picture;
 
+    @Column
+    private String nickName;
+
+    @Column
+    private String content;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "socialUser",cascade = CascadeType.REMOVE)
+    private List<Board> boardList = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+//    @OrderBy("id asc")
+//    private List<Comment> comment;
 
     @Builder
     public SocialUser(String name, String email, String picture, Role role) {
@@ -41,7 +59,18 @@ public class SocialUser extends BaseTimeEntity {
         return this;
     }
 
+    public SocialUser userUpdate(String nickName, String content) {
+        this.nickName = nickName;
+        this.content = content;
+        return this;
+    }
+
     public String getRoleKey() {
         return this.role.getKey();
     }
+
+//    public SocialUser changeName(String name) {
+//        this.nickName = name;
+//        return this;
+//    }
 }

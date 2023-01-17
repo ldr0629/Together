@@ -2,109 +2,116 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Joiner</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joiner</title>
 
-  <link rel="stylesheet" href="/css/bootstrap.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 
 <!--navbar-->
 <nav class="navbar navbar-expand-lg" style="height: 85px;">
-  <div class="container-fluid">
-    <a class="navbar-brand text-primary ms-4" th:href="@{/}">Logo</a>
+    <div class="container-fluid">
+        <a class="navbar-brand text-primary ms-4" th:href="@{/}">Together</a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="true" aria-label="Toggle navigation">
-      <i class="bi bi-list"></i>
-    </button>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="true" aria-label="Toggle navigation">
+            <i class="bi bi-list"></i>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item" sec:authorize="isAuthenticated()">
-          <a class="nav-link active" th:href="@{/board}"><span style="font-weight: bold;">모집하기</span></a>
-        </li>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link active" th:href="@{/board}"><span style="font-weight: bold;">모집하기</span></a>
+                </li>
 
-        <!-- login modal trigger -->
-        <li class="nav-item" sec:authorize="isAnonymous()">
-          <a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#login"><span style="font-weight: bold;">로그인</span></a>
-        </li>
+                <!-- login modal trigger -->
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#login"><span style="font-weight: bold;">로그인</span></a>
+                </li>
 
-        <!-- Modal -->
-        <div class="modal fade" id="login" tabindex="-1" aria-labelledby="login" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header border border-0">
-                <h1 class="modal-title fs-5 p-1" id="loginModalTitle">Logo</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body m-4">
-                <div class="row justify-content-between p-3">
-                  <div class="col-6"><a href="/oauth2/authorization/google" class="btn btn-outline-danger bi bi-google" role="button"> Google Login</a></div>
-                  <div class="col-6"><a href="/oauth2/authorization/naver" class="btn btn-outline-success" role="button">Naver Login</a></div>
+                <!-- Modal -->
+                <div class="modal fade" id="login" tabindex="-1" aria-labelledby="login" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header border border-0">
+                                <h1 class="modal-title fs-5 p-1" id="loginModalTitle">Together</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body m-4">
+                                <div class="row justify-content-between p-3">
+                                    <div class="col-6"><a href="/oauth2/authorization/google" class="btn btn-outline-danger bi bi-google" role="button"> Google Login</a></div>
+                                    <div class="col-6"><a href="/oauth2/authorization/naver" class="btn btn-outline-success" role="button">Naver Login</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <li class="nav-item" sec:authorize="isAuthenticated()">
-          <i class="bi bi-bell nav-link"></i>
-        </li>
-        <li class="nav-item" sec:authorize="isAuthenticated()">
-          <!--          <a th:href="@{/user/update/{id} (id = ${dto})"><i class="bi bi-gear nav-link"></i></a>-->
-        </li>
-      </ul>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <i class="bi bi-bell nav-link"></i>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+<!--                    <a th:href="@{/user/update/{id} (id = ${user.id})}"><i class="bi bi-gear nav-link"></i></a>-->
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
 
 <div class="container-lg mx-auto" style="width: 70%; margin-top: 5%;">
-  <h1 class="text-center">내 정보 수정</h1>
+    <h1 class="text-center">내 정보 수정</h1>
 
-  <!-- img uploader -->
-  <!--  <div class="container" style="margin-top: 150px;">-->
-  <!--    <div class="row">-->
-  <!--      <div class="col-3">-->
-  <!--    <span class="border border-secondary p-4 m-4"-->
-  <!--          style="width: 10rem; height: 10rem; border-radius: 50%; object-fit: cover; box-shadow: 0 0 8px rgb(0 0 0/9%);">-->
-  <!--      <img src="/images/images.svg" style="width: 100px; height: 100px;">-->
-  <!--    </span>-->
-  <!--      </div>-->
-  <!--      <div class="col-3">-->
-  <!--    <button class="btn btn-outline-success">이미지 선택</button>-->
-  <!--    <button class="btn btn-outline-danger">이미지 제거</button>-->
-  <!--    </div>-->
-  <!--    </div>-->
-  <!--  </div>-->
+    <!-- img uploader -->
+    <!--  <div class="container" style="margin-top: 150px;">-->
+    <!--    <div class="row">-->
+    <!--      <div class="col-3">-->
+    <!--    <span class="border border-secondary p-4 m-4"-->
+    <!--          style="width: 10rem; height: 10rem; border-radius: 50%; object-fit: cover; box-shadow: 0 0 8px rgb(0 0 0/9%);">-->
+    <!--      <img src="/images/images.svg" style="width: 100px; height: 100px;">-->
+    <!--    </span>-->
+    <!--      </div>-->
+    <!--      <div class="col-3">-->
+    <!--    <button class="btn btn-outline-success">이미지 선택</button>-->
+    <!--    <button class="btn btn-outline-danger">이미지 제거</button>-->
+    <!--    </div>-->
+    <!--    </div>-->
+    <!--  </div>-->
 
-  <div class="container-lg mx-auto mt-4 p-3" style="width: 80%;">
-    <form method="post" th:object="${user}">
-      <div class="input-group mb-3">
-        <label class="form-check-label h4 m-2" for="name">Username</label>
-        <input type="text" class="form-control form-check-input" placeholder="이름을 입력하세요" id="*{name}">
-      </div>
+    <div class="container-lg mx-auto mt-4 p-3" style="width: 80%;">
+        <form method="post" th:object="${user}">
+            <div class="input-group mb-3">
+                <label class="form-check-label m-2 h4">가입일</label>
+                <input readonly th:value="${user.date}" type="text" class="form-control h4" aria-describedby="basic-addon2">
+            </div>
 
-      <label class="form-check-label m-2 h4">Email</label>
-      <div class="input-group mb-3">
-        <input type="text" class="form-control h4" placeholder="이메일을 입력하세요" aria-describedby="basic-addon2" id="*{email}">
-        <span class="input-group-text" id="basic-addon2">@example.com</span>
-      </div>
+            <div class="input-group mb-3">
+                <label class="form-check-label m-2 h4">Email</label>
+                <input readonly th:value="${user.email}" type="text" class="form-control h4" placeholder="이메일을 입력하세요" aria-describedby="basic-addon2">
+            </div>
 
-      <div class="input-group mt-4">
-        <span class="input-group-text">자기소개</span>
-        <textarea class="form-control" aria-label="With textarea"></textarea>
-      </div>
+            <div class="input-group mb-3">
+                <label class="form-check-label h4 m-2">Username</label>
+                <input readonly th:value="${user.name}" type="text" class="form-control form-check-input" placeholder="이름을 입력하세요">
+            </div>
 
+            <div class="input-group mb-3">
+                <label class="form-check-label h4 m-2">Nickname</label>
+                <input th:value="${user.nickName}" type="text" class="form-control form-check-input" placeholder="닉네임을 입력하세요">
+            </div>
 
-      <div class="text-end m-3">
-<!--        <span>[[가입일 : ${user.regDate}]]</span>-->
-        <button class="btn btn-primary">저장</button>
-      </div>
-    </form>
-  </div>
+            <div class="input-group mt-4">
+                <span class="input-group-text">자기소개</span>
+                <textarea th:value="${user.content}" class="form-control" aria-label="With textarea"></textarea>
+            </div>
+
+            <div class="text-end m-3">
+                <button type="submit" class="btn btn-primary">저장</button>
+            </div>
+        </form>
+    </div>
 
 </div>
 
