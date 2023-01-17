@@ -10,6 +10,11 @@ import com.study.joiner.repository.UserRepository;
 import com.study.joiner.service.BoardService;
 import com.study.joiner.web.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +25,20 @@ public class BoardController {
     private final BoardService boardService;
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
+
+
+
+    @GetMapping("/")
+    public String list(Model model, @PageableDefault(size = 2 , sort = "id", direction = Sort.Direction.ASC)
+    Pageable pageable) {
+        Page<Board> postList = boardService.pageList(pageable);
+        int startPage = Math.max(1, postList.getPageable().getPageNumber() - 4);
+        int endPage = Math.min(postList.getTotalPages(), postList.getPageable().getPageNumber() + 4);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("postList", postList);
+        return "board/list";
+    }
 
     // 글 작성 -- 완
     @GetMapping("/user/write")
