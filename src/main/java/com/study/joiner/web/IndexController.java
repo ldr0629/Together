@@ -18,10 +18,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -79,13 +83,30 @@ public class IndexController {
 
     // 내 정보 수정 처리 -- 완
     @PostMapping("/user/update")
-    public String userUpdateComplete(@LoginUser SessionUser user, @ModelAttribute UserUpdateRequestDto requestDto, Model model) {
+    public String userUpdateComplete(@LoginUser SessionUser user, @ModelAttribute UserUpdateRequestDto requestDto, BindingResult bindingResult, Model model) {
+
+        // 검증
+        if(bindingResult.hasErrors()) {
+            // 회원가입 실패 시 입력 데이터 값 유지
+            model.addAttribute("userResponseDto",requestDto);
+
+            // 유효성 검사를 통과하지 못 한 필드와 메시지 핸들링
+            Map<String, String > errorMap = new HashMap<>();
+
+            for(FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put("valid_"+ error.getField(), error.getDefaultMessage());
+            }
+            return "redirect:/";
+        }
+
         UserResponseDto userResponseDto = userService.update(user.getEmail(), requestDto);
         model.addAttribute("user", userResponseDto);
         return "view/setting";
     }
 
-    // 회원 탈퇴 -- 완
+
+
+   // 회원 탈퇴 -- 완
     @DeleteMapping("/user/delete")
     public String userDelete(@LoginUser SessionUser user) {
         SocialUser socialUser = userRepository.findByEmail(user.getEmail())

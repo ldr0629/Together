@@ -38,4 +38,27 @@ public class UserService {
     public void delete(SocialUser socialUser) {
         userRepository.delete(socialUser);
     }
+
+//    /* 아이디, 닉네임, 이메일 중복 여부 확인 */
+//    @Transactional(readOnly = true)
+//    @Override
+//    public boolean checkUsernameDuplication(String username) {
+//        boolean usernameDuplicate = userRepository.existsByUsername(username);
+//        return usernameDuplicate;
+//    }
+//
+//    @Transactional(readOnly = true)
+//    @Override
+//    public boolean checkNicknameDuplication(String nickname) {
+//        boolean nicknameDuplicate = userRepository.existsByNickname(nickname);
+//        return nicknameDuplicate;
+//
+//    }
+//
+//    @Transactional(readOnly = true)
+//    @Override
+//    public boolean checkEmailDuplication(String email) {
+//        boolean emailDuplicate = userRepository.existsByEmail(email);
+//        return emailDuplicate;
+//    }
 }
