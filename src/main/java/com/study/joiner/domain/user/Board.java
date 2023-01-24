@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -51,12 +52,15 @@ public class Board extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private SocialUser socialUser;
 
-//    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-//    @OrderBy("id asc")
-//    private List<Comment> comment;
+    @OneToMany(mappedBy = "board")
+    private List<Comment> commentList = new ArrayList<>();
+    public void mappingComment(Comment comment) {
+        this.commentList.add(comment);
+    }
 
     @Builder
-    public Board(Long id, String postRecruit, String recruitNum, String progressWay, String duration, String skill, String date, String contactWay, String title, String content) {
+    public Board(Long id, String postRecruit, String recruitNum, String progressWay, String duration,
+                 String skill, String date, String contactWay, String title, String content) {
         this.id = id;
         this.postRecruit = postRecruit;
         this.recruitNum = recruitNum;
