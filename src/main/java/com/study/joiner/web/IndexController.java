@@ -12,16 +12,25 @@ import com.study.joiner.web.dto.BoardDto;
 import com.study.joiner.web.dto.UserResponseDto;
 import com.study.joiner.web.dto.UserUpdateRequestDto;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -33,32 +42,33 @@ public class IndexController {
 
     // 메인페이지 -- 완
     @GetMapping("/")
-    public String index(Model model, @LoginUser SessionUser user) {
-        List<BoardDto> boardDtoList = boardService.getBoardList();
-        model.addAttribute("boardList", boardDtoList);
+    public String index(Model model, @LoginUser SessionUser user,
+                        @PageableDefault(size = 10) Pageable pageable) {
+        Page<BoardDto> boardList = boardService.getBoardList(pageable);
+        int startPage = Math.max(1, boardList.getPageable().getPageNumber() - 4);
+        int endPage = Math.min(boardList.getTotalPages(), boardList.getPageable().getPageNumber() + 4);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("boardList", boardList);
         if(user != null) {
             model.addAttribute("user", user);
         }
         return "index";
     }
 
-    // 내 작성 글 목록 조회 (Pageable 보류)
+    // 내 작성 글 목록 조회
     @GetMapping("/user/board")
-    public String userBoardList(@LoginUser SessionUser user, Model model) {
-        SocialUser socialUser = userRepository.findByEmailFetchBL(user.getEmail()).orElseThrow();
-        List<BoardDto> boardDtos = boardService.getUserBoardList(socialUser);
-        model.addAttribute("userBoardList", boardDtos);
+    public String userBoardList(@LoginUser SessionUser user, Model model,
+                                @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<BoardDto> boardList = boardService.getUserBoardList(user.getEmail(), pageable);
+        int startPage = Math.max(1, boardList.getPageable().getPageNumber() - 4);
+        int endPage = Math.min(boardList.getTotalPages(), boardList.getPageable().getPageNumber() + 4);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("userBoardList", boardList);
+        model.addAttribute("user", user);
         return "view/userBoard";
     }
-//
-//    // 내 작성 글 목록 조회 (Pageable 적용 로직)
-//    @GetMapping("/user/board")
-//    public String userBoardList(@LoginUser SessionUser user, Pageable pageable, Model model) {
-//        SocialUser socialUser = userRepository.findByEmailFetchBL(user.getEmail()).orElseThrow();
-//        PageImpl<BoardDto> boardDtos = boardService.getUserBoardList(socialUser, pageable);
-//        model.addAttribute("userBoardList", boardDtos);
-//        return "view/userBoard";
-//    }
 
     // 내 작성 글 조회 -- 완
      @GetMapping("/user/board/{id}")
@@ -66,7 +76,7 @@ public class IndexController {
         SocialUser socialUser = userRepository.findByEmailFetchBL(user.getEmail()).orElseThrow();
         BoardDto boardDto = boardService.getUserBoard(id, socialUser);
         model.addAttribute("userBoard", boardDto);
-        return "view/userBoard";
+        return "view/detail";
     }
 
     // 내 정보 수정 조회 -- 완
@@ -79,7 +89,19 @@ public class IndexController {
 
     // 내 정보 수정 처리 -- 완
     @PostMapping("/user/update")
-    public String userUpdateComplete(@LoginUser SessionUser user, @ModelAttribute UserUpdateRequestDto requestDto, Model model) {
+    public String userUpdateComplete(@LoginUser SessionUser user, @Valid @ModelAttribute UserUpdateRequestDto requestDto,
+            BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors()) {
+            // 회원가입 실패 시 입력 데이터 값 유지
+            model.addAttribute("userResponseDto", requestDto);
+
+            Map<String, String> errorMap = new HashMap<>();
+            for(FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put("valid_" + error.getField(), error.getDefaultMessage());
+            }
+            return "redirect:/";
+        }
+
         UserResponseDto userResponseDto = userService.update(user.getEmail(), requestDto);
         model.addAttribute("user", userResponseDto);
         return "view/setting";
