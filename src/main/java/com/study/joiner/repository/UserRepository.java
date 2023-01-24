@@ -12,4 +12,6 @@ public interface UserRepository extends JpaRepository<SocialUser, Long> {
 
     @Query("select u from SocialUser u left join fetch u.boardList where u.email = :email")
     Optional<SocialUser> findByEmailFetchBL(@Param("email") String email);
+
+    boolean existsByNickName(String nickName);
 }
