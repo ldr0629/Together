@@ -26,10 +26,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -58,14 +55,17 @@ public class IndexController {
     @GetMapping("/user/board")
     public String userBoardList(@LoginUser SessionUser user, Model model,
                                 @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<BoardDto> boardList = boardService.getUserBoardList(user.getEmail(), pageable);
-        int startPage = Math.max(1, boardList.getPageable().getPageNumber() - 4);
-        int endPage = Math.min(boardList.getTotalPages(), boardList.getPageable().getPageNumber() + 4);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        model.addAttribute("userBoardList", boardList);
-        model.addAttribute("user", user);
-        return "view/userBoard";
+//        Page<BoardDto> boardList = boardService.getUserBoardList(user.getEmail(), pageable);
+//        int startPage = Math.max(1, boardList.getPageable().getPageNumber() - 4);
+//        int endPage = Math.min(boardList.getTotalPages(), boardList.getPageable().getPageNumber() + 4);
+//        model.addAttribute("startPage", startPage);
+//        model.addAttribute("endPage", endPage);
+//        model.addAttribute("boards", boardList);
+//        model.addAttribute("user", user);
+
+        SocialUser socialUser = userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
+        model.addAttribute("boards", socialUser.getBoardList());
+        return "view/list";
     }
 
 

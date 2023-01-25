@@ -68,7 +68,7 @@ public class BoardService {
     // 회원 특정 게시글 조회 -- 완
     @Transactional(readOnly = true)
     public BoardDto getUserBoard(Long id, SocialUser socialUser) {
-        Board board = socialUser.getBoardList().get(Math.toIntExact(id));
+        Board board = socialUser.getBoardList().get(Math.toIntExact(id)-1);
 //        Board board = boardRepository.findById(id)
 //                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
         BoardDto boardDto = new BoardDto(board);

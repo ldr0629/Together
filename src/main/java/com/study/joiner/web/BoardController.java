@@ -19,7 +19,8 @@ public class BoardController {
 
     // 글 작성 -- 완
     @GetMapping("/user/write")
-    public String userBoardWrite() {
+    public String userBoardWrite(Model model) {
+        model.addAttribute("board", new BoardDto());
         return "view/board";
     }
 
@@ -35,6 +36,15 @@ public class BoardController {
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable Long id, Model model) {
         BoardDto boardDto = boardService.getOtherUserBoard(id);
+        model.addAttribute("board", boardDto);
+        return "view/detail";
+    }
+
+    // 내 작성 글 상세 정보 -- 완
+    @GetMapping("/user/detail/{id}")
+    public String detailUser(@PathVariable Long id, @LoginUser SessionUser user, Model model) {
+        SocialUser socialUser = userRepository.findByEmail(user.getEmail()).orElseThrow();
+        BoardDto boardDto = boardService.getUserBoard(id, socialUser);
         model.addAttribute("board", boardDto);
         return "view/detail";
     }
