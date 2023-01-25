@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Together</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg" style="height: 85px;">
+    <div class="container-fluid">
+        <a class="navbar-brand text-primary ms-4" href="/" th:href="@{/}">Logo</a>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-list"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" href="./view/login.html" th:href="@{/member/login}" sec:authorize="isAnonymous()"><span style="font-weight: bold;">로그인</span></a>
+                </li>
+                <li class="nav-item">
+                    <i class="bi bi-bell nav-link"></i>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a th:href="@{/user/update}"><i class="bi bi-gear nav-link"></i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-lg" th:object="${board}" style="width: 80%;">
+    <h2 class="text-center" th:text="${board.title}"></h2>
+
+    <div class="row justify-content-end">
+        <div class="col-3" th:text="${board.id}"></div>
+        <div class="col-3" th:text="${board.date}"></div>
+    </div>
+</div>
+
+<script src="/js/bootstrap.js"></script>
+
+</body>
+</html>
