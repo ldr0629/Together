@@ -30,21 +30,10 @@ public class BoardService {
     // 게시글 등록 -- 완
     @Transactional
     public void addBoard(SocialUser user, BoardDto boardDto) {
-        Board board = Board.builder()
-                .id(boardDto.getId())
-                .postRecruit(boardDto.getPostRecruit())
-                .recruitNum(boardDto.getRecruitNum())
-                .progressWay(boardDto.getProgressWay())
-                .duration(boardDto.getDuration())
-                .skill(boardDto.getSkill())
-                .date(boardDto.getDate())
-                .contactWay(boardDto.getContactWay())
-                .title(boardDto.getTitle())
-                .content(boardDto.getContent())
-                .build();
+        Board board = boardDto.toEntity();
 
         board.setUser(user);
-        boardRepository.save(boardDto.toEntity());
+        boardRepository.save(board);
     }
 
     // 전체 게시글 조회 -- 완
