@@ -1,9 +1,11 @@
 package com.study.joiner.web.dto;
 
 import com.study.joiner.domain.user.Board;
+import com.study.joiner.domain.user.Comment;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,6 +22,7 @@ public class BoardDto {
     private String contactWay;
     private String title;
     private String content;
+    private List<Comment> commentList;
 
     public BoardDto(Board entity) {
         this.id = entity.getId();
@@ -32,6 +35,7 @@ public class BoardDto {
         this.contactWay = entity.getContactWay();
         this.title = entity.getTitle();
         this.content = entity.getContent();
+        this.commentList = entity.getCommentList();
     }
 
     public Board toEntity() {

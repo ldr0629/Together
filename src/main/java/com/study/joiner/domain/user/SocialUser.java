@@ -40,9 +40,11 @@ public class SocialUser extends BaseTimeEntity {
     @OneToMany(mappedBy = "socialUser",cascade = CascadeType.REMOVE)
     private List<Board> boardList = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-//    @OrderBy("id asc")
-//    private List<Comment> comment;
+    @OneToMany(mappedBy = "user")
+    private List<Comment> commentList = new ArrayList<>();
+    public void mappingComment(Comment comment) {
+        this.commentList.add(comment);
+    }
 
     @Builder
     public SocialUser(String name, String email, String picture, Role role) {
@@ -68,8 +70,7 @@ public class SocialUser extends BaseTimeEntity {
         return this.role.getKey();
     }
 
-//    public SocialUser changeName(String name) {
-//        this.nickName = name;
-//        return this;
-//    }
+    public void setNickName(String name) {
+        this.nickName = name;
+    }
 }
