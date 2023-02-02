@@ -75,4 +75,5 @@ public class BoardController {
         boardService.deleteBoard(id, socialUser);
         return "redirect:/";
     }
+
 }

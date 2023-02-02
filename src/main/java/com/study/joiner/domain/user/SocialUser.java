@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class SocialUser extends BaseTimeEntity {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;

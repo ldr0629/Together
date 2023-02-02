@@ -33,10 +33,15 @@ public class UserService {
         }
     }
 
+//    public UserResponseDto findById(Long id) {
+//        SocialUser entity = userRepository.findById(id);
+//    }
+
     // 내 정보 조회 -- 완
     @Transactional(readOnly = true)
     public UserResponseDto getInfo(String email) {
         SocialUser entity = userRepository.findByEmail(email)
+
                 .orElseThrow(IllegalArgumentException::new);
         return new UserResponseDto(entity);
     }

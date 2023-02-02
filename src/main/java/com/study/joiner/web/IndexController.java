@@ -1,29 +1,26 @@
 package com.study.joiner.web;
 
-import com.mysql.cj.Session;
 import com.study.joiner.config.auth.LoginUser;
 import com.study.joiner.config.auth.dto.SessionUser;
-import com.study.joiner.domain.user.Board;
+
 import com.study.joiner.domain.user.SocialUser;
 import com.study.joiner.repository.UserRepository;
 import com.study.joiner.service.BoardService;
+
 import com.study.joiner.service.UserService;
 import com.study.joiner.web.dto.BoardDto;
 import com.study.joiner.web.dto.UserResponseDto;
 import com.study.joiner.web.dto.UserUpdateRequestDto;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -40,11 +37,12 @@ public class IndexController {
     public String index(Model model, @LoginUser SessionUser user,
                         @PageableDefault(size = 10) Pageable pageable) {
         Page<BoardDto> boardList = boardService.getBoardList(pageable);
-        int startPage = Math.max(1, boardList.getPageable().getPageNumber() - 4);
-        int endPage = Math.min(boardList.getTotalPages(), boardList.getPageable().getPageNumber() + 4);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        model.addAttribute("boardList", boardList);
+        model.addAttribute("page", pageable);
+//        int startPage = Math.max(1, boardList.getPageable().getPageNumber() - 4);
+//        int endPage = Math.min(boardList.getTotalPages(), boardList.getPageable().getPageNumber() + 4);
+//        model.addAttribute("startPage", startPage);
+//        model.addAttribute("endPage", endPage);
+//        model.addAttribute("boardList", boardList);
         if(user != null) {
             model.addAttribute("user", user);
         }
@@ -67,7 +65,6 @@ public class IndexController {
         model.addAttribute("boards", socialUser.getBoardList());
         return "view/list";
     }
-
 
     // 내 작성 글 조회 -- 완
      @GetMapping("/user/board/{id}")
@@ -113,5 +110,6 @@ public class IndexController {
                 .orElseThrow(() -> new IllegalArgumentException());
         userService.delete(socialUser);
         return "redirect:/";
+
     }
 }
