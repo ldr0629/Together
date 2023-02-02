@@ -59,10 +59,9 @@ public class SocialUser extends BaseTimeEntity {
         return this;
     }
 
-    public SocialUser userUpdate(String nickName, String content) {
+    public void userUpdate(String nickName, String content) {
         this.nickName = nickName;
         this.content = content;
-        return this;
     }
 
     public String getRoleKey() {
