@@ -27,6 +27,12 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
+    // 페이징
+    @Transactional(readOnly = true)
+    public Page<Board> pageList(Pageable pageable) {
+        return boardRepository.findAll(pageable);
+    }
+
     // 게시글 등록 -- 완
     @Transactional
     public void addBoard(SocialUser user, BoardDto boardDto) {
