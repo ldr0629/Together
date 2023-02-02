@@ -19,4 +19,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Query("select b from Board b order by b.createdDate desc")
     Page<Board> findAllDesc(Pageable pageable);
+
+    @Query("select b from Board b left join b.socialUser u where u.email = :email order by b.createdDate desc")
+    Page<Board> findAllByEmail(String email, Pageable pageable);
 }

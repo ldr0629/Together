@@ -27,6 +27,7 @@ public class UserService {
         // 중복 회원이 아니라면 수정 가능
         if(!checkNicknameDuplication(requestDto.getNickName())) {
             user.userUpdate(requestDto.getNickName(), requestDto.getContent());
+            userRepository.save(user);
             return new UserResponseDto(user);
         } else {
             return new UserResponseDto(user);
@@ -51,7 +52,6 @@ public class UserService {
     // 닉네임 중복 여부 확인
     @Transactional(readOnly = true)
     public boolean checkNicknameDuplication(String nickName) {
-        boolean nickNameDuplicate = userRepository.existsByNickName(nickName);
-        return nickNameDuplicate;
+        return userRepository.existsByNickName(nickName);
     }
 }

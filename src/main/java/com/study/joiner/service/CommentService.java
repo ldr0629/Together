@@ -44,6 +44,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("해당 댓글이 존재하지 않습니다." + id));
         comment.update(commentDto.getContent());
+        commentRepository.save(comment);
     }
 
     @Transactional

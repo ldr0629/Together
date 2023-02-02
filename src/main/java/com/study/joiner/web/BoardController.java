@@ -2,7 +2,9 @@ package com.study.joiner.web;
 
 import com.study.joiner.config.auth.LoginUser;
 import com.study.joiner.config.auth.dto.SessionUser;
+import com.study.joiner.domain.user.Board;
 import com.study.joiner.domain.user.SocialUser;
+import com.study.joiner.repository.BoardRepository;
 import com.study.joiner.repository.UserRepository;
 import com.study.joiner.service.BoardService;
 import com.study.joiner.web.dto.BoardDto;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class BoardController {
     private final BoardService boardService;
     private final UserRepository userRepository;
+    private final BoardRepository boardRepository;
 
     // 글 작성 -- 완
     @GetMapping("/user/write")
@@ -40,23 +43,10 @@ public class BoardController {
         return "view/detail";
     }
 
-    // 내 작성 글 상세 정보 -- 완
-    @GetMapping("/user/detail/{id}")
-    public String detailUser(@PathVariable Long id, @LoginUser SessionUser user, Model model) {
-        SocialUser socialUser = userRepository.findByEmail(user.getEmail()).orElseThrow();
-        BoardDto boardDto = boardService.getUserBoard(id, socialUser);
-        model.addAttribute("board", boardDto);
-        return "view/detail";
-    }
-
     // 글 수정 조회
     @GetMapping("/edit/{id}")
     public String userBoardEdit(@PathVariable Long id, @LoginUser SessionUser user, Model model) {
-        SocialUser socialUser = userRepository.findByEmail(user.getEmail()).orElseThrow();
-        BoardDto boardDto = boardService.getUserEditBoard(id, socialUser);
-        if(boardDto != null) {
-            model.addAttribute("board", boardDto);
-        }
+        BoardDto boardDto = boardService.getEditBoard(id, user.getEmail());
         return "view/edit";
     }
 
@@ -71,8 +61,7 @@ public class BoardController {
     // 글 삭제 -- 완
     @DeleteMapping("/delete/{id}")
     public String userBoardDelete(@PathVariable Long id, @LoginUser SessionUser user) {
-        SocialUser socialUser = userRepository.findByEmail(user.getEmail()).orElseThrow();
-        boardService.deleteBoard(id, socialUser);
+        boardService.deleteBoard(id, user.getEmail());
         return "redirect:/";
     }
 }

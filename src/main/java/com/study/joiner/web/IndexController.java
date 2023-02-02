@@ -38,12 +38,15 @@ public class IndexController {
     // 메인페이지 -- 완
     @GetMapping("/")
     public String index(Model model, @LoginUser SessionUser user,
-                        @PageableDefault(size = 10) Pageable pageable) {
-        Page<BoardDto> boardList = boardService.getBoardList(pageable);
+                        @RequestParam(value="page", defaultValue = "0") int pageNum,
+                        @PageableDefault(size = 9) Pageable pageable) {
+        Page<BoardDto> boardList = boardService.getBoardList(pageNum, pageable);
         int startPage = Math.max(1, boardList.getPageable().getPageNumber() - 4);
         int endPage = Math.min(boardList.getTotalPages(), boardList.getPageable().getPageNumber() + 4);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+//        model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
+//        model.addAttribute("next", pageable.next().getPageNumber());
         model.addAttribute("boardList", boardList);
         if(user != null) {
             model.addAttribute("user", user);
@@ -54,8 +57,9 @@ public class IndexController {
     // 내 작성 글 목록 조회
     @GetMapping("/user/board")
     public String userBoardList(@LoginUser SessionUser user, Model model,
-                                @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-//        Page<BoardDto> boardList = boardService.getUserBoardList(user.getEmail(), pageable);
+                                @RequestParam(value="page", defaultValue = "0") int pageNum,
+                                @PageableDefault(size = 9) Pageable pageable) {
+//        Page<BoardDto> boardList = boardService.getUserBoardList(user.getEmail(), pageNum, pageable);
 //        int startPage = Math.max(1, boardList.getPageable().getPageNumber() - 4);
 //        int endPage = Math.min(boardList.getTotalPages(), boardList.getPageable().getPageNumber() + 4);
 //        model.addAttribute("startPage", startPage);
@@ -67,7 +71,6 @@ public class IndexController {
         model.addAttribute("boards", socialUser.getBoardList());
         return "view/list";
     }
-
 
     // 내 작성 글 조회 -- 완
      @GetMapping("/user/board/{id}")
@@ -92,7 +95,7 @@ public class IndexController {
                                      BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) {
             // 회원가입 실패 시 입력 데이터 값 유지
-            model.addAttribute("userResponseDto", requestDto);
+            model.addAttribute("user", user);
 
             Map<String, String> errorMap = new HashMap<>();
             for(FieldError error : bindingResult.getFieldErrors()) {
@@ -107,7 +110,7 @@ public class IndexController {
     }
 
     // 회원 탈퇴 -- 완
-    @DeleteMapping("/user/delete")
+    @PostMapping("/user/delete")
     public String userDelete(@LoginUser SessionUser user) {
         SocialUser socialUser = userRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException());
