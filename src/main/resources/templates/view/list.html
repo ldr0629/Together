@@ -27,8 +27,14 @@
                     <a class="nav-link active" th:href="@{/user/write}"><span style="font-weight: bold;">모집하기</span></a>
                     <!--          <a href="/logout" class="btn btn-outline-dark active" role="button">로그아웃</a>-->
                 </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a href="/logout" class="nav-link active"><span style="font-weight: bold;">로그아웃</span></a>
+                </li>
                 <li class="nav-item">
                     <i class="bi bi-bell nav-link"></i>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a th:href="@{/user/board}"><i class="bi bi-list nav-link"></i></a>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a th:href="@{/user/update}"><i class="bi bi-gear nav-link"></i></a>

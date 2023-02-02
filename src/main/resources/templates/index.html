@@ -27,6 +27,9 @@
             <a class="nav-link active" th:href="@{/user/write}"><span style="font-weight: bold;">모집하기</span></a>
   <!--          <a href="/logout" class="btn btn-outline-dark active" role="button">로그아웃</a>-->
           </li>
+          <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a href="/logout" class="nav-link active"><span style="font-weight: bold;">로그아웃</span></a>
+          </li>
 
           <!-- login modal trigger -->
           <li class="nav-item" sec:authorize="isAnonymous()">
