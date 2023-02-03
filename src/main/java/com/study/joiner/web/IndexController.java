@@ -36,18 +36,28 @@ public class IndexController {
     private final UserRepository userRepository;
 
     // 메인페이지 -- 완
+//    @GetMapping("/")
+//    public String index(Model model, @LoginUser SessionUser user,
+//                        @RequestParam(value="page", defaultValue = "0") int pageNum,
+//                        @PageableDefault(size = 9) Pageable pageable) {
+//        Page<BoardDto> boardList = boardService.getBoardList(pageNum, pageable);
+//        int startPage = Math.max(1, boardList.getPageable().getPageNumber() - 4);
+//        int endPage = Math.min(boardList.getTotalPages(), boardList.getPageable().getPageNumber() + 4);
+//        model.addAttribute("startPage", startPage);
+//        model.addAttribute("endPage", endPage);
+////        model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
+////        model.addAttribute("next", pageable.next().getPageNumber());
+//        model.addAttribute("boardList", boardList);
+//        if(user != null) {
+//            model.addAttribute("user", user);
+//        }
+//        return "index";
+//    }
+
     @GetMapping("/")
-    public String index(Model model, @LoginUser SessionUser user,
-                        @RequestParam(value="page", defaultValue = "0") int pageNum,
-                        @PageableDefault(size = 9) Pageable pageable) {
-        Page<BoardDto> boardList = boardService.getBoardList(pageNum, pageable);
-        int startPage = Math.max(1, boardList.getPageable().getPageNumber() - 4);
-        int endPage = Math.min(boardList.getTotalPages(), boardList.getPageable().getPageNumber() + 4);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-//        model.addAttribute("previous", pageable.previousOrFirst().getPageNumber());
-//        model.addAttribute("next", pageable.next().getPageNumber());
-        model.addAttribute("boardList", boardList);
+    public String index(Model model, @LoginUser SessionUser user) {
+        List<BoardDto> boardDtoList = boardService.getBoardList();
+        model.addAttribute("boards", boardDtoList);
         if(user != null) {
             model.addAttribute("user", user);
         }

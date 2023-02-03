@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Together</title>
+  <title>Joiner</title>
 
   <link rel="stylesheet" href="/css/bootstrap.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -21,51 +21,48 @@
       <i class="bi bi-list"></i>
     </button>
 
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item" sec:authorize="isAuthenticated()">
-            <a class="nav-link active" th:href="@{/user/write}"><span style="font-weight: bold;">모집하기</span></a>
-  <!--          <a href="/logout" class="btn btn-outline-dark active" role="button">로그아웃</a>-->
-          </li>
-          <li class="nav-item" sec:authorize="isAuthenticated()">
-            <a href="/logout" class="nav-link active"><span style="font-weight: bold;">로그아웃</span></a>
-          </li>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+          <a class="nav-link active" th:href="@{/user/write}"><span style="font-weight: bold;">모집하기</span></a>
+          <!--          <a href="/logout" class="btn btn-outline-dark active" role="button">로그아웃</a>-->
+        </li>
 
-          <!-- login modal trigger -->
-          <li class="nav-item" sec:authorize="isAnonymous()">
-              <a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#login"><span style="font-weight: bold;">로그인</span></a>
-          </li>
+        <!-- login modal trigger -->
+        <li class="nav-item" sec:authorize="isAnonymous()">
+          <a class="nav-link active" href="#" data-bs-toggle="modal" data-bs-target="#login"><span style="font-weight: bold;">로그인</span></a>
+        </li>
 
-            <!-- Modal -->
-            <div class="modal fade" id="login" tabindex="-1" aria-labelledby="login" aria-hidden="true">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header border border-0">
-                    <h1 class="modal-title fs-5 p-1" id="loginModalTitle">Together</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body m-4">
-                    <div class="row justify-content-between p-3">
-                      <div class="col-6"><a href="/oauth2/authorization/google" class="btn btn-outline-danger bi bi-google" role="button"> Google Login</a></div>
-                      <div class="col-6"><a href="/oauth2/authorization/naver" class="btn btn-outline-success" role="button">Naver Login</a></div>
-                    </div>
-                  </div>
+        <!-- Modal -->
+        <div class="modal fade" id="login" tabindex="-1" aria-labelledby="login" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header border border-0">
+                <h1 class="modal-title fs-5 p-1" id="loginModalTitle">Together</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body m-4">
+                <div class="row justify-content-between p-3">
+                  <div class="col-6"><a href="/oauth2/authorization/google" class="btn btn-outline-danger bi bi-google" role="button"> Google Login</a></div>
+                  <div class="col-6"><a href="/oauth2/authorization/naver" class="btn btn-outline-success" role="button">Naver Login</a></div>
                 </div>
               </div>
             </div>
-          <li class="nav-item" sec:authorize="isAuthenticated()">
-              <a th:href="@{/user/board}"><i class="bi bi-list nav-link"></i></a>
-          </li>
+          </div>
+        </div>
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+          <a th:href="@{/list}"><i class="bi bi-list nav-link"></i></a>
+        </li>
 
-          <li class="nav-item" sec:authorize="isAuthenticated()">
-            <a th:href="@{/user/update}"><i class="bi bi-gear nav-link"></i></a>
-          </li>
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+          <a th:href="@{/user/update}"><i class="bi bi-gear nav-link"></i></a>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 
-<!--silder-->
+<!--slider-->
 <div id="slider" class="carousel slide" data-bs-ride="true">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#slider" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -114,34 +111,39 @@
   </div>
   <hr class="border border-primary">
 
-  <div class="row justify-content-around mt-4 p-4">
-    <div class="col-4 card shadow-sm" style="width: 18rem;">
-      <div class="card-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum omnis unde velit ipsa incidunt. Pariatur, ipsa. Vel, reiciendis at blanditiis quam molestias eius quaerat inventore, nam quisquam quos fugit natus.</div>
-      <hr class="border border-secondary m-4">
+  <table class="row mt-4 p-4">
+    <tbody>
+    <tr class="col-3 ps-3 card shadow-sm m-4 d-inline-flex" style="width: 18rem; min-height: 40vh;" th:each="article : ${boards}"
+        th:onclick="|location.href='detail/${article.id}'|">
+      <td class="card-body h6" th:text="|시작 예정일 : ${article.date}|"></td>
+      <td class="card-body" th:text="${article.title}"></td>
+      <!--        <td class="card-group border border-secondary m-4">-->
+      <td class="card-footer text-end bg-white" th:text="${user.name}"></td>
+    </tr>
+    </tbody>
+  </table>
 
-      <div class="m-2 ms-auto">
-        <i class="bi bi-cursor">  26</i>
-        <i class="bi bi-chat">  5</i>
-      </div>
-    </div>
-    <div class="col-4 card shadow-sm" style="width: 18rem;">
-      <div class="card-body">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt nobis nostrum voluptate, repellat eius iure, dolorem reprehenderit atque, dicta voluptates tempore ducimus autem ex exercitationem repudiandae. In amet dolorem sunt?</div>
-      <hr class="border border-secondary m-4">
-      <div class="m-2 ms-auto">
-        <i class="bi bi-cursor">  26</i>
-        <i class="bi bi-chat">  5</i>
-      </div>
-    </div>
-    <div class="col-4 card shadow-sm" style="width: 18rem;">
-      <div class="card-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat, similique hic odit molestias alias ad! Ad nobis odio deleniti voluptates laboriosam veniam voluptatem perferendis ut porro animi, minima quam eveniet?</div>
-      <hr class="border border-secondary m-4">
-      <div class="m-2 ms-auto">
-        <i class="bi bi-cursor">  26</i>
-        <i class="bi bi-chat">  5</i>
-      </div>
-    </div>
-
-  </div>
+  <!--  <div th:if="${!paging.isEmpty()}">-->
+  <!--    <ul class="pagination justify-content-center">-->
+  <!--      <li class="page-item" th:classappend="${!paging.hasPrevious()} ? 'disabled'">-->
+  <!--        <a class="page-link" th:href="@{|?page=0|}"><span><<</span></a>-->
+  <!--      </li>-->
+  <!--      <li class="page-item" th:classappend="${!paging.hasPrevious()} ? 'disabled'">-->
+  <!--        <a class="page-link" th:href="@{|?page=${paging.number - 1}|}"><span>이전</span></a>-->
+  <!--      </li>-->
+  <!--      <li class="page-item" th:each="page : ${#numbers.sequence(0, paging.totalPages - 1)}"-->
+  <!--          th:if="${page >= paging.number - 3 and page <= paging.number + 3}"-->
+  <!--          th:classappend="${page == paging.number} ? 'active'">-->
+  <!--        <a class="page-link" th:text="${page}" th:href="@{|?page=${page}|}"></a>-->
+  <!--      </li>-->
+  <!--      <li class="page-item" th:classappend="${!paging.hasNext()} ? 'disabled'">-->
+  <!--        <a class="page-link" th:href="@{|?page=${paging.number + 1}|}"><span>다음</span></a>-->
+  <!--      </li>-->
+  <!--      <li class="page-item" th:classappend="${!paging.hasNext()} ? 'disabled'">-->
+  <!--        <a class="page-link" th:href="@{|?page=${paging.totalPages - 1}|}"><span>>></span></a>-->
+  <!--      </li>-->
+  <!--    </ul>-->
+  <!--  </div>-->
 </div>
 
 <!--  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->

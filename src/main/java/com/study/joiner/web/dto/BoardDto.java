@@ -5,6 +5,7 @@ import com.study.joiner.domain.user.Comment;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
@@ -46,7 +47,7 @@ public class BoardDto {
                 .progressWay(progressWay)
                 .duration(duration)
                 .skill(skill)
-                .date(date)
+                .date(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .contactWay(contactWay)
                 .title(title)
                 .content(content)
