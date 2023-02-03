@@ -2,9 +2,11 @@ package com.study.joiner.web.dto;
 
 import com.study.joiner.domain.user.Board;
 import com.study.joiner.domain.user.Comment;
+import com.study.joiner.domain.user.SocialUser;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
@@ -22,6 +24,7 @@ public class BoardDto {
     private String contactWay;
     private String title;
     private String content;
+    private SocialUser socialUser;
     private List<Comment> commentList;
 
     public BoardDto(Board entity) {
@@ -35,22 +38,22 @@ public class BoardDto {
         this.contactWay = entity.getContactWay();
         this.title = entity.getTitle();
         this.content = entity.getContent();
+        this.socialUser = entity.getSocialUser();
         this.commentList = entity.getCommentList();
     }
 
     public Board toEntity() {
-        Board board = Board.builder()
+        return Board.builder()
                 .id(id)
                 .postRecruit(postRecruit)
                 .recruitNum(recruitNum)
                 .progressWay(progressWay)
                 .duration(duration)
                 .skill(skill)
-                .date(date)
+                .date(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .contactWay(contactWay)
                 .title(title)
                 .content(content)
                 .build();
-        return board;
     }
 }
