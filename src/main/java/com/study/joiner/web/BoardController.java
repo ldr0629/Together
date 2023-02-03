@@ -9,9 +9,15 @@ import com.study.joiner.repository.UserRepository;
 import com.study.joiner.service.BoardService;
 import com.study.joiner.web.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Controller
@@ -19,6 +25,23 @@ public class BoardController {
     private final BoardService boardService;
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
+
+    // 글 목록
+    @GetMapping("/list")
+    public String index(@LoginUser SessionUser user, Model model,
+                        @RequestParam(required = false) String keyword,
+                        @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        SocialUser socialUser = userRepository.findById(user.getId()).orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
+        Page<Board> paging;
+
+        paging = keyword == null ? boardService.getList(pageable) : boardService.getSearchList(pageable, keyword);
+
+        model.addAttribute("boards", socialUser.getBoardList());
+        model.addAttribute("user", user);
+        model.addAttribute("paging", paging);
+
+        return "view/list";
+    }
 
     // 글 작성 -- 완
     @GetMapping("/user/write")
@@ -37,8 +60,9 @@ public class BoardController {
 
     // 글 상세 정보 -- 완
     @GetMapping("/detail/{id}")
-    public String detail(@PathVariable Long id, Model model) {
+    public String detail(@PathVariable Long id, @LoginUser SessionUser user, Model model) {
         BoardDto boardDto = boardService.getOtherUserBoard(id);
+        model.addAttribute("user", user);
         model.addAttribute("board", boardDto);
         return "view/detail";
     }

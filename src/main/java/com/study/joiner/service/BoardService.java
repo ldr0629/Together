@@ -37,8 +37,15 @@ public class BoardService {
     public Page<BoardDto> getBoardList(int pageNum, Pageable pageable) {
         pageable = PageRequest.of(pageNum, pageable.getPageSize());
         Page<Board> boardList = boardRepository.findAllDesc(pageable);
-        Page<BoardDto> boardDtos = boardList.map(m -> new BoardDto(m));
+        Page<BoardDto> boardDtos = boardList.map(BoardDto::new);
         return boardDtos;
+    }
+
+    @Transactional(readOnly = true)
+    public List<BoardDto> getBoardList() {
+        return boardRepository.findAllDesc().stream()
+                .map(BoardDto::new)
+                .collect(Collectors.toList());
     }
 
     // 회원 전체 게시글 조회(페이징 적용) -- 완
@@ -46,24 +53,30 @@ public class BoardService {
     public Page<BoardDto> getUserBoardList(String email, int pageNum, Pageable pageable) {
         PageRequest page = PageRequest.of(pageNum, pageable.getPageSize());
         Page<Board> boardList  = boardRepository.findAllByEmail(email, page);
-        Page<BoardDto> boardDtos = boardList.map(m -> new BoardDto(m));
-        return boardDtos;
+        return boardList.map(BoardDto::new);
     }
 
     // 다른 회원 글 상세 조회 -- 완
     @Transactional(readOnly = true)
     public BoardDto getOtherUserBoard(Long id) {
         Optional<Board> board = boardRepository.findById(id);
-        BoardDto boardDto = new BoardDto(board.get());
-        return boardDto;
+        return new BoardDto(board.get());
+    }
+
+    public Page<Board> getList(Pageable pageable) {
+//        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return boardRepository.findAllBy(pageable);
+    }
+
+    public Page<Board> getSearchList(Pageable pageable, String keyword) {
+        return boardRepository.findByTitleContaining(keyword, pageable);
     }
 
     // 회원 글 조회 -- 완
     @Transactional(readOnly = true)
     public BoardDto getUserBoard(Long id, SocialUser socialUser) {
         Board board = socialUser.getBoardList().get(Math.toIntExact(id)-1);
-        BoardDto boardDto = new BoardDto(board);
-        return boardDto;
+        return new BoardDto(board);
     }
 
     // 회원 메인페이지 상세 글 조회
@@ -72,8 +85,7 @@ public class BoardService {
         SocialUser socialUser = userRepository.findByEmail(email).orElseThrow();
         Board board = boardRepository.findById(id).orElseThrow();
         if(board.getSocialUser().getId().equals(socialUser.getId())) {
-            BoardDto boardDto = new BoardDto(board);
-            return boardDto;
+            new BoardDto(board);
         }
         return null;
     }
