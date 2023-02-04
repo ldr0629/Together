@@ -37,8 +37,7 @@ public class BoardService {
     public Page<BoardDto> getBoardList(int pageNum, Pageable pageable) {
         pageable = PageRequest.of(pageNum, pageable.getPageSize());
         Page<Board> boardList = boardRepository.findAllDesc(pageable);
-        Page<BoardDto> boardDtos = boardList.map(BoardDto::new);
-        return boardDtos;
+        return boardList.map(BoardDto::new);
     }
 
     @Transactional(readOnly = true)

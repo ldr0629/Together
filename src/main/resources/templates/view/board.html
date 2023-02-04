@@ -5,139 +5,134 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Together</title>
+  <title>Document</title>
   <link rel="stylesheet" href="/css/bootstrap.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <style>
     select option[value=""][disabled] {
-	    display: none;
+      display: none;
     }
 
-    .ck-editor__editable { 
+    .ck-editor__editable {
       height: 400px;
-     }
+    }
   </style>
   <script src="https://cdn.ckeditor.com/ckeditor5/35.4.0/classic/ckeditor.js"></script>
   <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
 
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg" style="height: 85px;">
-    <div class="container-fluid">
-      <a class="navbar-brand text-primary ms-4" href="/" th:href="@{/}">Together</a>
+<nav class="navbar navbar-expand-lg" style="height: 85px;">
+  <div class="container-fluid">
+    <a class="navbar-brand text-primary ms-4" href="/" th:href="@{/}">Logo</a>
 
-      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="bi bi-list"></i>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" href="./view/login.html" th:href="@{/member/login}" sec:authorize="isAnonymous()"><span style="font-weight: bold;">로그인</span></a>
-          </li>
-          <li class="nav-item" sec:authorize="isAuthenticated()">
-            <a href="/logout" class="nav-link active"><span style="font-weight: bold;">로그아웃</span></a>
-          </li>
-          <li class="nav-item" sec:authorize="isAuthenticated()">
-            <a th:href="@{/list}"><i class="bi bi-list nav-link"></i></a>
-          </li>
-          <li class="nav-item" sec:authorize="isAuthenticated()">
-            <a th:href="@{/user/update}"><i class="bi bi-gear nav-link"></i></a>
-          </li>
-        </ul>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" href="./view/login.html" th:href="@{/member/login}" sec:authorize="isAnonymous()"><span style="font-weight: bold;">로그인</span></a>
+        </li>
+        <li class="nav-item">
+          <i class="bi bi-bell nav-link"></i>
+        </li>
+        <li class="nav-item">
+          <i class="bi bi-gear nav-link"></i>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<form th:action method="post" th:object="${board}">
+  <div class="container-lg mx-auto mt-5 p-4">
+    <div class="container-lg"><h3>모집에 필요한 정보를 입력해주세요</h3></div>
+    <hr class="border border-primary">
+
+    <div class="row m-4">
+      <div class="col-md-5 m-4">
+        <label for="inputState" class="form-label">모집 구분</label>
+        <select id="inputState" class="form-select" th:field="*{postRecruit}">
+          <option value="" disabled selected>프로젝트 / 스터디</option>
+          <option value="프로젝트">프로젝트</option>
+          <option value="스터디">스터디</option>
+        </select>
+      </div>
+
+      <div class="col-md-5 m-4">
+        <label for="inputState0" class="form-label">모집 인원</label>
+        <input type="number" id="inputState0" class="form-control" th:field="*{recruitNum}">
+      </div>
+
+      <div class="col-md-5 m-4">
+        <label for="inputState1" class="form-label">진행 방식</label>
+        <select id="inputState1" class="form-select" th:field="*{progressWay}">
+          <option value="" disabled selected>온라인 / 오프라인</option>
+          <option value="온라인">온라인</option>
+          <option value="오프라인">오프라인</option>
+        </select>
+      </div>
+
+      <div class="col-md-5 m-4">
+        <label for="inputState2" class="form-label">진행 기한</label>
+        <select id="inputState2" class="form-select" th:field="*{duration}">
+          <option value="" disabled selected>진행기한</option>
+          <option value="1개월">1개월</option>
+          <option value="2개월">2개월</option>
+          <option value="3개월">3개월</option>
+          <option value="4개월">4개월</option>
+          <option value="5개월">5개월</option>
+          <option value="6개월 이상">6개월 이상</option>
+        </select>
+      </div>
+
+      <div class="col-md-5 m-4">
+        <label for="inputState3" class="form-check-label">기술 스택</label>
+        <input class="form-control" id="inputState3" type="text" th:field="*{skill}">
+      </div>
+
+      <div class="col-md-5 m-4">
+        <label for="inputState4" class="form-label">시작 예정일</label>
+        <input class="form-control" id="inputState4" type="date" th:field="*{date}">
+      </div>
+
+      <div class="col-md-5 m-4">
+        <label for="inputState5" class="form-label">연락 방법</label>
+        <select id="inputState5" class="form-select" th:field="*{contactWay}">
+          <option value="" disabled selected>연락 방법</option>
+          <option value="카카오톡 오픈채팅">카카오톡 오픈채팅</option>
+          <option value="구글 폼">구글 폼</option>
+        </select>
       </div>
     </div>
-  </nav>
+  </div>
+  </div>
 
+  <div class="container-lg mx-auto mt-3 p-4">
+    <div class="container-lg"><h3>프로젝트에 대해 설명해주세요</h3></div>
+    <hr class="border border-primary">
 
-  <form th:action method="post" th:object="${board}">
-    <div class="container-lg mx-auto mt-5 p-4">
-      <div class="container-lg"><h3>모집에 필요한 정보를 입력해주세요</h3></div>
-      <hr class="border border-primary">
+    <div class="p-3 m-4 mx-auto">
+      <input type="text" class="form-control mb-3" placeholder="제목을 입력하세요" th:field="*{title}">
 
-      <div class="row m-4">
-        <div class="col-md-5 m-4">
-          <label for="inputState" class="form-label">모집 구분</label>
-          <select id="inputState" class="form-select" th:field="*{postRecruit}">
-            <option value="" disabled selected>프로젝트 / 스터디</option>
-            <option value="프로젝트">프로젝트</option>
-            <option value="스터디">스터디</option>
-          </select>
-        </div>
+      <textarea id="editor" th:field="*{content}"></textarea>
 
-        <div class="col-md-5 m-4">
-          <label for="inputState0" class="form-label">모집 인원</label>
-          <input type="number" id="inputState0" class="form-control" th:field="*{recruitNum}">
-        </div>
-
-        <div class="col-md-5 m-4">
-          <label for="inputState1" class="form-label">진행 방식</label>
-          <select id="inputState1" class="form-select" th:field="*{progressWay}">
-            <option value="" disabled selected>온라인 / 오프라인</option>
-            <option value="온라인">온라인</option>
-            <option value="오프라인">오프라인</option>
-          </select>
-        </div>
-
-        <div class="col-md-5 m-4">
-          <label for="inputState2" class="form-label">진행 기한</label>
-          <select id="inputState2" class="form-select" th:field="*{duration}">
-            <option value="" disabled selected>진행기한</option>
-            <option value="1개월">1개월</option>
-            <option value="2개월">2개월</option>
-            <option value="3개월">3개월</option>
-            <option value="4개월">4개월</option>
-            <option value="5개월">5개월</option>
-            <option value="6개월 이상">6개월 이상</option>
-          </select>
-        </div>
-
-        <div class="col-md-5 m-4">
-          <label for="inputState3" class="form-check-label">기술 스택</label>
-          <input class="form-control" id="inputState3" type="text" th:field="*{skill}">
-        </div>
-
-        <div class="col-md-5 m-4">
-          <label for="inputState4" class="form-label">시작 예정일</label>
-          <input class="form-control" id="inputState4" type="date" th:field="*{date}">
-        </div>
-
-        <div class="col-md-5 m-4">
-          <label for="inputState5" class="form-label">연락 방법</label>
-          <select id="inputState5" class="form-select" th:field="*{contactWay}">
-            <option value="" disabled selected>연락 방법</option>
-            <option value="카카오톡 오픈채팅">카카오톡 오픈채팅</option>
-            <option value="구글 폼">구글 폼</option>
-          </select>
-        </div>
+      <div class="m-3 d-grid gap-2 d-md-flex justify-content-md-end">
+        <button class="btn btn-primary" type="submit">모집하기</button>
       </div>
     </div>
-    </div>
+  </div>
+</form>
 
-    <div class="container-lg mx-auto mt-3 p-4">
-      <div class="container-lg"><h3>프로젝트에 대해 설명해주세요</h3></div>
-      <hr class="border border-primary">
-
-      <div class="p-3 m-4 mx-auto">
-        <input type="text" class="form-control mb-3" placeholder="제목을 입력하세요" th:field="*{title}">
-
-        <textarea id="editor" th:field="*{content}"></textarea>
-
-        <div class="m-3 d-grid gap-2 d-md-flex justify-content-md-end">
-          <button class="btn btn-primary" type="submit">모집하기</button>
-        </div>
-      </div>
-    </div>
-  </form>
-
-
-  <script src="/js/bootstrap.js"></script>
-  <script>
-    ClassicEditor
-        .create( document.querySelector( '#editor' ), { language: "ko" } )
-        .catch( error => {
+<script src="/js/bootstrap.js"></script>
+<script>
+  ClassicEditor
+          .create( document.querySelector( '#editor' ), { language: "ko" } )
+          .catch( error => {
             console.error( error );
-        } );
-  </script>
+          } );
+</script>
 
 </body>
 </html>

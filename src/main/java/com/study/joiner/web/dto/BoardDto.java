@@ -26,6 +26,7 @@ public class BoardDto {
     private String content;
     private SocialUser socialUser;
     private List<Comment> commentList;
+    private Long writerId;
 
     public BoardDto(Board entity) {
         this.id = entity.getId();
@@ -40,6 +41,7 @@ public class BoardDto {
         this.content = entity.getContent();
         this.socialUser = entity.getSocialUser();
         this.commentList = entity.getCommentList();
+        this.writerId = entity.getSocialUser().getId();
     }
 
     public Board toEntity() {

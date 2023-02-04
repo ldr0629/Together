@@ -9,6 +9,7 @@ import com.study.joiner.repository.UserRepository;
 import com.study.joiner.service.BoardService;
 import com.study.joiner.web.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,6 +22,7 @@ import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Controller
+@Slf4j
 public class BoardController {
     private final BoardService boardService;
     private final UserRepository userRepository;
@@ -67,17 +69,11 @@ public class BoardController {
         return "view/detail";
     }
 
-    // 글 수정 조회
-    @GetMapping("/edit/{id}")
-    public String userBoardEdit(@PathVariable Long id, @LoginUser SessionUser user, Model model) {
-        BoardDto boardDto = boardService.getEditBoard(id, user.getEmail());
-        return "view/edit";
-    }
-
     // 글 수정 처리
-    @PutMapping("/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String userBoardUpdate(@PathVariable Long id, @LoginUser SessionUser user, @ModelAttribute BoardDto boardDto) {
         SocialUser socialUser = userRepository.findByEmailFetchBL(user.getEmail()).orElseThrow();
+        log.info("boardDto = {}", boardDto);
         boardService.updateBoard(id, socialUser, boardDto);
         return "view/detail";
     }
