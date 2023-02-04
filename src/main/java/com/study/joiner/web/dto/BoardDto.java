@@ -24,6 +24,7 @@ public class BoardDto {
     private String title;
     private String content;
     private List<Comment> commentList;
+    private Long writerId;
 
     public BoardDto(Board entity) {
         this.id = entity.getId();
@@ -37,10 +38,11 @@ public class BoardDto {
         this.title = entity.getTitle();
         this.content = entity.getContent();
         this.commentList = entity.getCommentList();
+        this.writerId = entity.getSocialUser().getId();
     }
 
     public Board toEntity() {
-        Board board = Board.builder()
+        return Board.builder()
                 .id(id)
                 .postRecruit(postRecruit)
                 .recruitNum(recruitNum)
@@ -52,6 +54,5 @@ public class BoardDto {
                 .title(title)
                 .content(content)
                 .build();
-        return board;
     }
 }

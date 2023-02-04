@@ -40,6 +40,8 @@
     <div class="row justify-content-end mt-4">
         작성자 : <span class="col-2" th:text="${user.name}"></span>
         작성일 : <span class="col-2" th:text="${board.date}"></span>
+        <button th:if="${user.id == board.writerId}" class="btn btn-outline-primary col-1 m-2" th:onclick="|location.href='/edit/${board.id}'|">수정</button>
+        <button th:if="${user.id == board.writerId}" class="btn btn-outline-primary col-1 m-2" th:onclick="|location.href='/delete/${board.id}'|">삭제</button>
     </div>
     <hr class="border border-primary my-4">
 
