@@ -56,6 +56,13 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(Model model, @LoginUser SessionUser user) {
+//        Page<BoardDto> boardList = boardService.getBoardList(pageNum, pageable);
+//        int startPage = Math.max(1, boardList.getPageable().getPageNumber() - 4);
+//        int endPage = Math.min(boardList.getTotalPages(), boardList.getPageable().getPageNumber() + 4);
+//        model.addAttribute("startPage", startPage);
+//        model.addAttribute("endPage", endPage);
+//        model.addAttribute("boardList", boardList);
+
         List<BoardDto> boardDtoList = boardService.getBoardList();
         model.addAttribute("boards", boardDtoList);
         if(user != null) {
@@ -64,11 +71,11 @@ public class IndexController {
         return "index";
     }
 
-    // 내 작성 글 목록 조회
-    @GetMapping("/user/board")
-    public String userBoardList(@LoginUser SessionUser user, Model model,
-                                @RequestParam(value="page", defaultValue = "0") int pageNum,
-                                @PageableDefault(size = 9) Pageable pageable) {
+//    // 내 작성 글 목록 조회
+//        @GetMapping("/user/board")
+//        public String userBoardList(@LoginUser SessionUser user, Model model,
+//        @RequestParam(value="page", defaultValue = "0") int pageNum,
+//        @PageableDefault(size = 9) Pageable pageable) {
 //        Page<BoardDto> boardList = boardService.getUserBoardList(user.getEmail(), pageNum, pageable);
 //        int startPage = Math.max(1, boardList.getPageable().getPageNumber() - 4);
 //        int endPage = Math.min(boardList.getTotalPages(), boardList.getPageable().getPageNumber() + 4);
@@ -76,18 +83,19 @@ public class IndexController {
 //        model.addAttribute("endPage", endPage);
 //        model.addAttribute("boards", boardList);
 //        model.addAttribute("user", user);
-
-        SocialUser socialUser = userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
-        model.addAttribute("boards", socialUser.getBoardList());
-        return "view/list";
-    }
+//
+//        SocialUser socialUser = userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
+//        model.addAttribute("boards", socialUser.getBoardList());
+//        return "view/list";
+//    }
 
     // 내 작성 글 조회 -- 완
-     @GetMapping("/user/board/{id}")
+     @GetMapping("/user/detail/{id}")
      public String userBoard(@PathVariable Long id, @LoginUser SessionUser user, Model model) {
         SocialUser socialUser = userRepository.findByEmailFetchBL(user.getEmail()).orElseThrow();
         BoardDto boardDto = boardService.getUserBoard(id, socialUser);
-        model.addAttribute("userBoard", boardDto);
+        model.addAttribute("user", user);
+        model.addAttribute("board", boardDto);
         return "view/detail";
     }
 

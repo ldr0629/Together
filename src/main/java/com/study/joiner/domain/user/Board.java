@@ -48,6 +48,10 @@ public class Board extends BaseTimeEntity {
     @Lob
     private String content;
 
+    @Enumerated(EnumType.STRING)
+    @Column
+    private Tag tags;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private SocialUser socialUser;

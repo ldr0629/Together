@@ -28,6 +28,23 @@ public class BoardController {
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
 
+    // 글 목록
+    @GetMapping("/list")
+    public String index(@LoginUser SessionUser user, Model model,
+                        @RequestParam(required = false) String keyword,
+                        @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        SocialUser socialUser = userRepository.findById(user.getId()).orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
+        Page<Board> paging;
+
+        paging = keyword == null ? boardService.getList(pageable) : boardService.getSearchList(pageable, keyword);
+
+        model.addAttribute("boards", socialUser.getBoardList());
+        model.addAttribute("user", user);
+        model.addAttribute("paging", paging);
+
+        return "view/list";
+    }
+
     // 글 작성 -- 완
     @GetMapping("/user/write")
     public String userBoardWrite(Model model) {
@@ -43,25 +60,6 @@ public class BoardController {
         return "redirect:/";
     }
 
-    // 글 목록
-    @GetMapping("/list")
-    public String index(@LoginUser SessionUser user, Model model,
-                        @RequestParam(required = false) String keyword,
-                        @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
-        SocialUser socialUser = userRepository.findById(user.getId()).orElseThrow(
-                () -> new NoSuchElementException("사용자가 존재하지 않습니다.")
-        );
-        Page<Board> paging;
-
-        paging = keyword == null ? boardService.getList(pageable) : boardService.getSearchList(pageable, keyword);
-
-        model.addAttribute("boards", socialUser.getBoardList());
-        model.addAttribute("user", user);
-        model.addAttribute("paging", paging);
-
-        return "view/list";
-    }
-
     // 글 상세 정보 -- 완
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable Long id, @LoginUser SessionUser user, Model model) {
@@ -70,13 +68,6 @@ public class BoardController {
         model.addAttribute("board", boardDto);
         return "view/detail";
     }
-
-    // 글 수정 조회
-//    @GetMapping("/edit/{id}")
-//    public String userBoardEdit(@PathVariable Long id, @LoginUser SessionUser user, Model model) {
-//        BoardDto boardDto = boardService.getEditBoard(id, user.getEmail());
-//        return "view/edit";
-//    }
 
     // 글 수정 처리
     @GetMapping("/edit/{id}")

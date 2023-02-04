@@ -11,103 +11,95 @@
 
 </head>
 <body>
-<nav class="navbar navbar-expand-lg" style="height: 85px;">
-    <div class="container-fluid">
-        <a class="navbar-brand text-primary ms-4" href="/" th:href="@{/}">Logo</a>
+    <nav class="navbar navbar-expand-lg" style="height: 85px;">
+        <div class="container-fluid">
+            <a class="navbar-brand text-primary ms-4" href="/" th:href="@{/}">Together</a>
 
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="bi bi-list"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" href="./view/login.html" th:href="@{/member/login}" sec:authorize="isAnonymous()"><span style="font-weight: bold;">로그인</span></a>
-                </li>
-                <li class="nav-item">
-                    <i class="bi bi-bell nav-link"></i>
-                </li>
-                <li class="nav-item">
-                    <i class="bi bi-gear nav-link"></i>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<div class="container-lg" style="width: 80%;">
-    <h2 class="text-center" th:text="${board.title}"></h2>
-
-    <div class="row justify-content-end mt-4">
-        작성자 : <span class="col-2" th:text="${user.name}"></span>
-        작성일 : <span class="col-2" th:text="${board.date}"></span>
-        <button th:if="${user.id == board.writerId}" class="btn btn-outline-primary col-1 m-2" th:onclick="|location.href='/edit/${board.id}'|">수정</button>
-        <button th:if="${user.id == board.writerId}" class="btn btn-outline-primary col-1 m-2" th:onclick="|location.href='/delete/${board.id}'|">삭제</button>
-    </div>
-    <hr class="border border-primary my-4">
-
-    <div class="container-lg mx-auto" style="width: 80%;">
-        <div class="row m-4" th:object="${board}">
-            <div class="col-md-4 m-4">
-                <h6>모집 구분 : <span th:text="*{postRecruit}"></span></h6>
-            </div>
-            <div class="col-md-4 m-4">
-                <h6>모집 인원 : <span th:text="*{recruitNum}"></span></h6>
-            </div>
-            <div class="col-md-4 m-4">
-                <h6>진행 방식 : <span th:text="*{progressWay}"></span></h6>
-            </div>
-            <div class="col-md-4 m-4">
-                <h6>진행 기한 : <span th:text="*{duration}"></span></h6>
-            </div>
-            <div class="col-md-4 m-4">
-                <h6>기술 스택 : <span th:text="*{skill}"></span></h6>
-            </div>
-            <div class="col-md-4 m-4">
-                <h6>시작 예정일 : <span th:text="*{date}"></span></h6>
-            </div>
-            <div class="col-md-4 m-4">
-                <h6>연락 방법 : <span th:text="*{contactWay}"></span></h6>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./view/login.html" th:href="@{/member/login}" sec:authorize="isAnonymous()"><span style="font-weight: bold;">로그인</span></a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a href="/logout" class="nav-link active"><span style="font-weight: bold;">로그아웃</span></a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a th:href="@{/list}"><i class="bi bi-list nav-link"></i></a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a th:href="@{/user/update}"><i class="bi bi-gear nav-link"></i></a>
+                    </li>
+                </ul>
             </div>
         </div>
-    </div>
+    </nav>
 
-    <hr class="border border-primary my-4">
+    <div class="container-lg" th:object="${board}" style="width: 80%;">
+        <h2 class="text-center" th:text="${board.title}"></h2>
 
-    <div class="container" style="min-height: 50vh;">
-        <div th:utext="${board.content}"></div>
-    </div>
+        <div class="row justify-content-end mt-4">
+            작성자 : <span class="col-2" th:text="${user.name}"></span>
+            작성일 : <span class="col-2" th:text="${board.date}"></span>
+            <button th:if="${user.id == board.writerId}" class="btn btn-outline-primary col-1 m-2" th:onclick="|location.href='/edit/${board.id}'|">수정</button>
+            <button th:if="${user.id == board.writerId}" class="btn btn-outline-primary col-1 m-2" th:onclick="|location.href='/delete/${board.id}'|">삭제</button>
+        </div>
+        <hr class="border border-primary my-4">
 
-    <hr class="border border-primary">
-    <div class="container-lg">
-        <div class="col-sm-10 col-md-9 col-lg-9 mx-auto p-4 text-center">
-            <form th:action="@{#}" method="post">
-                <div class="mb-3" sec:authorize="isAnonymous()">
-                    <textarea class="form-control" rows="3" placeholder="댓글을 쓰려면 로그인이 필요합니다"></textarea>
+        <div class="container-lg mx-auto" style="width: 80%;">
+            <div class="row m-4" th:object="${board}">
+                <div class="col-md-4 m-4">
+                    <h6>모집 구분 : <span th:text="*{postRecruit}"></span></h6>
                 </div>
-                <div class="mb-3" sec:authorize="isAuthenticated()">
-                    <textarea class="form-control" name="content" id="content" rows="3"></textarea>
+                <div class="col-md-4 m-4">
+                    <h6>모집 인원 : <span th:text="*{recruitNum}"></span></h6>
                 </div>
+                <div class="col-md-4 m-4">
+                    <h6>진행 방식 : <span th:text="*{progressWay}"></span></h6>
+                </div>
+                <div class="col-md-4 m-4">
+                    <h6>진행 기한 : <span th:text="*{duration}"></span></h6>
+                </div>
+                <div class="col-md-4 m-4">
+                    <h6>기술 스택 : <span th:text="*{skill}"></span></h6>
+                </div>
+                <div class="col-md-4 m-4">
+                    <h6>시작 예정일 : <span th:text="*{date}"></span></h6>
+                </div>
+                <div class="col-md-4 m-4">
+                    <h6>연락 방법 : <span th:text="*{contactWay}"></span></h6>
+                </div>
+            </div>
+        </div>
 
-                <div class="text-end">
-                    <button type="submit" class="btn btn-outline-success" sec:authorize="isAuthenticated()" disabled>댓글 쓰기</button>
-                </div>
-            </form>
+        <hr class="border border-primary my-4">
+
+        <div class="container" style="min-height: 50vh;">
+            <div th:utext="${board.content}"></div>
+        </div>
+
+        <hr class="border border-primary">
+        <div class="container-lg">
+            <div class="col-sm-10 col-md-9 col-lg-9 mx-auto p-4 text-center">
+                <form th:action="@{#}" method="post">
+                    <div class="mb-3" sec:authorize="isAnonymous()">
+                        <textarea class="form-control" rows="3" placeholder="댓글을 쓰려면 로그인이 필요합니다"></textarea>
+                    </div>
+                    <div class="mb-3" sec:authorize="isAuthenticated()">
+                        <textarea class="form-control" name="content" id="content" rows="3"></textarea>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-outline-success" sec:authorize="isAuthenticated()" disabled>댓글 쓰기</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
-    <!--  <div class="container-lg">-->
-    <!--    <div class="col-sm-10 col-md-9 col-lg-9 mx-auto p-4">-->
-    <!--      <div th:each="reply : ${article.getReplies()}">-->
-    <!--        <hr class="border border-secondary">-->
-    <!--        <span th:text="${reply.createdBy}"></span>-->
-    <!--        <p class="p-4 m-3" th:text="${reply.content}"></p>-->
-    <!--      </div>-->
-    <!--    </div>-->
-    <!--  </div>-->
-
-</div>
-
-<script src="/js/bootstrap.js"></script>
+    <script src="/js/bootstrap.js"></script>
 
 </body>
 </html>

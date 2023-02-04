@@ -84,7 +84,7 @@ public class BoardService {
         SocialUser socialUser = userRepository.findByEmail(email).orElseThrow();
         Board board = boardRepository.findById(id).orElseThrow();
         if(board.getSocialUser().getId().equals(socialUser.getId())) {
-            return new BoardDto(board);
+            new BoardDto(board);
         }
         return null;
     }
